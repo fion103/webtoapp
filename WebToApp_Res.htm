@@ -36,14 +36,14 @@ a:hover {
 		var hh = padZero(d.getHours().toString());
 		var mm = padZero(d.getMinutes().toString());
 		var ss = padZero(d.getSeconds().toString());
-	//	varorderNumber.value = intkind + YYYY.substr(2) + MM + DD + hh + mm + ss;
-	//	varorderNumber.value = varorderNumber.value.substr(0, 19);
+		//varorderNumber.value = intkind + YYYY.substr(2) + MM + DD + hh + mm + ss;
+		//varorderNumber.value = varorderNumber.value.substr(0, 19);
 		
 		
 		//確認有console物件可以使用
-	//	if (console != undefined) {
-	//		console.log('varorderNumber is ' + varorderNumber.value);
-	//	}
+		//if (console != undefined) {
+		//	console.log('varorderNumber is ' + varorderNumber.value);
+		//}
 	}
 	//補零
 	function padZero(strValue) {
@@ -57,13 +57,13 @@ a:hover {
 
 		var frm = document.forms[0];
 		var exeEnv = document.getElementById('exeEnv').value;
-		var strUrl = exeEnv + '/FOCAS_WS/API20/QRP/V2/WebToAppReq/';
+		var strUrl = exeEnv + '/FOCAS_WS/API20/QRP/V2/WebToAppRes/';
 		if (exeEnv == 'www.focas-test.fisc.com.tw') {
 			strUrl = 'https://' + strUrl
 		} else {
 			strUrl = 'http://' + strUrl
 		}
-		//https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppReq/
+		//https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/
 		frm.action = strUrl;
 		frm.submit();
 	}
@@ -73,24 +73,25 @@ a:hover {
 		
 		var txtAcqBank = document.getElementById('acqBank');
 		var txtMerchant = document.getElementById('merchantId');
-		txtAcqBank.value = txtMerchant.value.substr(0, 3);
+		//txtAcqBank.value = txtMerchant.value.substr(0, 3);
 		
 		var txtEncRetURL = document.pay_form.encRetURL.value;
-                var txtEncQRCode = document.pay_form.encQRCode.value;
+                var txtcardPlan = document.pay_form.cardPlan.value;
 		var txtOrderNumber = document.pay_form.orderNumber.value;
 		var txtAcqBank = document.pay_form.acqBank.value;
 		var txtMerchantId = document.pay_form.merchantId.value;
 		var txtTerminalId = document.pay_form.terminalId.value;
-		var txtWalletList = document.pay_form.walletList.value;
-		var txttxnType = document.pay_form.txnType.value;
+                var txtresponseCode = document.pay_form.responseCode.value;
+		var txthostId = document.pay_form.hostId.value;
 		
 		
 		var txtKey = document.pay_form.key.value;
 		var txtInput = "";
-                txtInput =  txtAcqBank  + txtEncQRCode + txtEncRetURL  + txtMerchantId  + txtOrderNumber  +  txtTerminalId  + txttxnType  + txtWalletList  + txtKey;
+                txtInput =  txtAcqBank  + txtcardPlan + txtEncRetURL  + txthostId + txtMerchantId  + txtOrderNumber + txtresponseCode +  txtTerminalId  + txtKey;
 
+		var txtSignType = document.getElementById('signType');
+		if(txtSignType.options[txtSignType.selectedIndex].value=="1" )
 			dosha256(txtInput);
-
 	}
 	function dosha256(input) {
 		var txtReqSign = document.getElementById('verifyCode');
@@ -113,8 +114,8 @@ a:hover {
 				<table cellSpacing=0 cellPadding=8 width=520 border=0>
 					<tr>
 						<td>
-							<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppReq/">
-                                                         <!--<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/DEV_FOCAS_WS/API20/QRP/V2/WebToAppReq/">-->
+							<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/">
+                                                         <!--<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/DEV_FOCAS_WS/API20/QRP/V2/WebToAppRes/">-->
                                                                       
 
 								<table width=100% cellspacing=1 cellpadding=5 border=0 bgcolor=#999999>
@@ -133,59 +134,58 @@ a:hover {
 													</td>
 												</tr>
 												<input type=hidden name=txnStatus value="0">
-											
-												<input type=hidden id="acqBank" name=acqBank value="">
-												
-											        <tr bgcolor="#FFFFFF">
-													<td width=100%>訂單編號：<input type=text id="orderNumber" name=orderNumber value="QRP20191234567890" maxlength=19>
+												<input type=hidden name=txnType value="01">
+												<!--<input type=hidden id="acqBank" name=acqBank value="">-->
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>驗證碼押碼方式： <select id="signType" name=signatureType>
+															<option value="1" selected>SHA-256</option>
+														</select>
 													</td>
 												</tr>
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>特店代號：<input type=text id="merchantId" name=merchantId value="006263015610001" maxlength=15>
+													<td width=100%>acqBank：<input type=text id="acqBank" name=acqBank value="006" maxlength=20>
 													</td>
 												</tr>
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>端末代號：<input type=text name=terminalId value="00010001" maxlength=8>
+													<td width=100%>訂單編號：<input type=text id="orderNumber" name=orderNumber value="QRP20191234567890" maxlength=20>
 													</td>
 												</tr>
- 												<tr bgcolor="#FFFFFF">
-													<td width=100%>交易類型：<input type=text id="txnType" name=txnType value="01" maxlength=5>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>特店代號：<input type=text id="merchantId" name=merchantId value="006263015610001" maxlength=16>
+													</td>
+												</tr>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>端末代號：<input type=text name=terminalId value="00010001" maxlength=9>
 													</td>
 												</tr>
                                                            
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>支援錢包清單：<input type=text name=walletList value="94901" maxlength=999>
+													<td width=100%>ServerId：<input type=text name=hostId value="00815610000000000000001" maxlength=999>
 													</td>
 												</tr>
-
-												<tr bgcolor="#FFFFFF">
-													<td width=100%>加密QR Code內容： <select name='encQRCode' id='exeEnv' maxlength=999>
-															<option value='BATMUCtQxTIQk64JnYWHkWbiUc98278Olk3Mk2zqApXqIkwdIzXqRuPsXY1Xp6TavWl99awMPxTokIwxIxEAt6GQoiYFJbbfLpYdGD49A%2FL9%2BuNjWWcBmfOdBa0S1GF1Lx0EvaXNZ6A4ASKT3afQRUcMMjWmvYeGsGin1b3OUAnDuS6tCjgPYBW92QmrSPywPsNLu0vTIMOQiEv3XMKv4pbqGWRZMNQEtTgHhgv%2FxNq%2F''>台灣pay(F)</option>
-															<option value='Bcm67B3%2BTTR6eNYjrebel8nlyPeqiD%2BHg8yJBQeUa4kp4PsOda9rqabygWTphVeR6zxUAAxhpZVCPBZ%2B0Qn7dG4ivu%2BUA4JqIFCDdpIJSbgJp%2B%2BlRoXKObppHgCNYkeiHmPhKB0bJgDibDgQ25pno%2FjjJDoPaC1rwwWuBZVRsAWDoYXxFHR%2BrqwPZwZpTq4JxvUHb%2F5Zvke0r1oQOTYQdseHrfZivOrLnugLLD%2F5KzCMu0kufk%2BY6B%2Btsu8ZCiYhXU2ojiWZDQfQoMXhx%2FmtbCc%3D'>台灣payEMVQR(F)</option>
-															<option value='BaUWoPEWw8spOGYzxaQZO18K389TUU4GMGdY3pwB1cZBjj25DVkydF5%2FZOSzvVRe%2Bm%2FuBdjpUP%2F3h8Nz%2FDUoVYQZTjgJQVD797qij4rSE9gKq5zgOWmEQqhDbs8CkEm%2BxWQM%2BTvLHhrQmQ9OSBjyDL6TjYkHWRhYTA%2B6YrEvzJ5wPKoh8kPa%2BMnOoDFIu8k8TuOlDv0yonQ96MQ6uvYG0eAUwV4LyMS0kCpb5ETOx%2Bs05NaOJlqnmnrNofG9TRYg80%2FE85q7Rp%2FlPK2clsGrTPrPHZ7TR7TpVLvzcCcpgdXUyPuMXV5BFvSjzDMG%2FJVwTLMtJ35RJJz%2FxcHINlKXHieKY2A0m8eJJSUlkQvaUix6DSZm2Z8AA3Qy2cMDpMOgUB0CG%2BFs3iYqcEYYBDI6KGk%2B%2BddBchqFimCuxS34AliC' selected>EMVQR(VMJCF)</option>
-															<option value='BT4fpSzBEywzmG%2BvlbAum7atsaTuj5nl%2BYDKAUULRt8e1aYkTjTfRFtx4MXOJbMQpIuJbI5U3JgN9PlhVru8MkxteRDAjXFL%2Bwkj0kRRh%2FVXRh3TRfWMO%2B8ejdKjnn5PzYgJq%2FXOEOu0j9RW9vrKeZ%2BKs7YWgizLOGa6iSKi3Y5EJI6tMnMiEJlqfwzFsiJZfS%2F9Pgc%2BHijwGnoGfo7IZ5gtkdZeGpTEVQZz63BIlDUyqesFHV%2FSQhvOcUMvrmuK%2Bw%3D%3D' selected>信用卡繳費QR</option>
-													    		<option value='BdQb4mIkor5o1GGXG3Feiz30xepdvzDAEPKk1MIScO1FYqdfMWnxTGbZgKX%2BXNdz0BMQ9bUdyTsKVymY1xGFjR09X9r28vMehKASpdvhr1V%2BpN3nqWRUdvDJGM20E5kjk3ooGH4b7jpZ6a5049tAW%2FdE%2FO1R%2Bkohv9%2BSegN%2BO0uulCwqnsHEm75AvtVapoMopEycbnZIeTz%2BgdyXiGxklaCn6PX7DAwcb%2BU7kEcKF3%2FwMMYxBPYw0ncT9y2sBy1a4p5m153Ub1gJfiQxCXKGsR8%3D' selected>金融卡繳費QR</option>
-													</select>
+                                                                                                <tr bgcolor="#FFFFFF">
+													<td width=100%>交易卡別：<input type=text name=cardPlan value="F" size=1 maxlength=4>
+                                                                                                        
 													</td>
 												</tr>
-
 												                                                                                           												
-									                        <!--<tr bgcolor="#FFFFFF">
-													<td width=100%>加密QR Code內容：<input type=text name=encQRCode value='BATMUCtQxTIQk64JnYWHkWbiUc98278Olk3Mk2zqApXqIkwdIzXqRuPsXY1Xp6TavWl99awMPxTokIwxIxEAt6GQoiYFJbbfLpYdGD49A%2FL9%2BuNjWWcBmfOdBa0S1GF1Lx0EvaXNZ6A4ASKT3afQRUcMMjWmvYeGsGin1b3OUAnDuS6tCjgPYBW92QmrSPywPsNLu0vTIMOQiEv3XMKv4pbqGWRZMNQEtTgHhgv%2FxNq%2F'
-                                                                                                        size=80 maxlength=999>
+									                        <tr bgcolor="#FFFFFF">
+													<td width=100%>回應碼：<input type=text name=responseCode value="0000" size=4 maxlength=5>
+                                                                                                        
 													</td>
-												</tr>-->
+												</tr>
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>交易結果回傳網址：<input type=text name=encRetURL value='BUBkkbctOcLxTwhLDPxa6CtHjyyIxIWlCVaqGk55QxJzYEOtxxyqahenP%2FLVJbBIAafulZcvX%2BijybAZhsEBD%2BY%3D'  size=80 maxlength=400>
+													<td width=100%>交易結果回傳網址：<input type=text name=encRetURL value='BfPZfleKBtgHkbMT3Z7F4FXTxmzCzzxXJtUkalp6klBJHWiCU7RWuasM%2bxl81u1UcdcFjXnBGDusq7Teva06NLY'  size=80 maxlength=500>
 													</td>
 												</tr>
 												<tr bgcolor="#FFFFFF">
 													<td width=100%>REQ驗證碼： <input type=text id="verifyCode" name=verifyCode value="" size=80
-														maxlength=64>
+														maxlength=65>
 													</td>
 												</tr>
+                                                                                                
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>驗證參數：<input type=text id="KeyID" name=key value="04E61A6ABAC70D44D3E64648A29CD171E732549DB3CD5CAF" maxlength=64>
+													<td width=100%>驗證參數：<input type=text id="KeyID" name=key value="A44E4E84669D755F8033A24A5CB71EFA" maxlength=64>
 													</td>
 												</tr>
 											</table>
