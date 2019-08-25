@@ -1,0 +1,205 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>網路商店WebToApp Sale Sample</title>
+<style type="text/css">
+<!--
+a:hover {
+	position: relative;
+	top: 1px;
+	left: 1px
+}
+-->
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="MSHTML 6.00.2800.1106" name=GENERATOR>
+<link href="style.css" rel="stylesheet" type="text/css">
+
+<meta http-equiv="PRAGMA" content="NO-CACHE">
+<meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+<meta http-equiv="Expires" content="-1">
+</head>
+<script type="text/javascript" src="sha256.js"> </script>
+<script type="text/javascript" src="jquery-1.12.3.min.js"> </script>
+
+<script Language=JavaScript>
+	//頁面初始化 11
+	function init() {
+		var d = new Date();
+		//取得頁面元素
+		var varorderNumber = document.getElementById('orderNumber');
+		//取得訂單開始名稱
+		var intkind = 'QRP';               
+		var YYYY = d.getFullYear().toString();
+		var MM = padZero((d.getMonth() + 1).toString()); // getMonth() is zero-based
+		var DD = padZero(d.getDate().toString());
+		var hh = padZero(d.getHours().toString());
+		var mm = padZero(d.getMinutes().toString());
+		var ss = padZero(d.getSeconds().toString());
+	//	varorderNumber.value = intkind + YYYY.substr(2) + MM + DD + hh + mm + ss;
+	//	varorderNumber.value = varorderNumber.value.substr(0, 19);
+		
+		
+		//確認有console物件可以使用
+	//	if (console != undefined) {
+	//		console.log('varorderNumber is ' + varorderNumber.value);
+	//	}
+	}
+	//補零
+	function padZero(strValue) {
+		if (strValue.length == 1) {
+			strValue = '0' + strValue;
+		}
+		return strValue;
+	}
+	function doSubmit(btn) {
+		calculateReqToken();
+
+		var frm = document.forms[0];
+		var exeEnv = document.getElementById('exeEnv').value;
+		var strUrl = exeEnv + '/FOCAS_WS/API20/QRP/V2/WebToAppReq/';
+		if (exeEnv == 'www.focas-test.fisc.com.tw') {
+			strUrl = 'https://' + strUrl
+		} else {
+			strUrl = 'http://' + strUrl
+		}
+		//https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppReq/
+		frm.action = strUrl;
+		frm.submit();
+	}
+       
+	function calculateReqToken() {
+		
+		
+		var txtAcqBank = document.getElementById('acqBank');
+		var txtMerchant = document.getElementById('merchantId');
+		txtAcqBank.value = txtMerchant.value.substr(0, 3);
+		
+		var txtEncRetURL = document.pay_form.encRetURL.value;
+                var txtEncQRCode = document.pay_form.encQRCode.value;
+		var txtOrderNumber = document.pay_form.orderNumber.value;
+		var txtAcqBank = document.pay_form.acqBank.value;
+		var txtMerchantId = document.pay_form.merchantId.value;
+		var txtTerminalId = document.pay_form.terminalId.value;
+		var txtWalletList = document.pay_form.walletList.value;
+		var txttxnType = document.pay_form.txnType.value;
+		
+		
+		var txtKey = document.pay_form.key.value;
+		var txtInput = "";
+                txtInput =  txtAcqBank  + txtEncQRCode + txtEncRetURL  + txtMerchantId  + txtOrderNumber  +  txtTerminalId  + txttxnType  + txtWalletList  + txtKey;
+
+			dosha256(txtInput);
+
+	}
+	function dosha256(input) {
+		var txtReqSign = document.getElementById('verifyCode');
+		txtReqSign.value = hex_sha256(input);
+	}
+</script>
+<body bgColor=#ffffff background="bg.gif" text=#000000 leftmargin="0" topMargin="0" marginwidth="10"
+	marginheight="0" onload='init()'>
+	<table width="800" height=100% border=0 cellPadding=0 cellSpacing=0 align=center>
+		<tr>
+
+			<td width="538" height="75" align="right" vAlign=bottom background=bg_top_1.jpg><block></td>
+		</tr>
+		<tr bgcolor="#003366">
+			<td height="5" colspan="2"><block></td>
+		</tr>
+		<tr align="center" valign="top" bgcolor="#FFFFFF">
+			<td width=100% colspan=2><br>
+
+				<table cellSpacing=0 cellPadding=8 width=520 border=0>
+					<tr>
+						<td>
+							<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppReq/">
+                                                         <!--<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/DEV_FOCAS_WS/API20/QRP/V2/WebToAppReq/">-->
+                                                                      
+
+								<table width=100% cellspacing=1 cellpadding=5 border=0 bgcolor=#999999>
+									<tr bgcolor=#ffa87d>
+										<td bgcolor=#AEDCFF class=c-13><strong>網路商店WebToApp Sale Sample</strong></td>
+									</tr>
+									<tr>
+										<td width=100%>
+											<table width=100% border=0 align=center cellpadding=5 cellspacing=1 class=c-13>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>執行環境： <select name='exeEnv' id='exeEnv'>
+															<option value='127.0.0.1:8080'>本機環境</option>
+															<option value='10.201.201.143:8080'>開發環境</option>
+															<option value='www.focas-test.fisc.com.tw' selected>測試環境</option>
+													</select>
+													</td>
+												</tr>
+												<input type=hidden name=txnStatus value="0">
+											
+												<input type=hidden id="acqBank" name=acqBank value="">
+												
+											        <tr bgcolor="#FFFFFF">
+													<td width=100%>訂單編號：<input type=text id="orderNumber" name=orderNumber value="QRP20191234567890" maxlength=19>
+													</td>
+												</tr>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>特店代號：<input type=text id="merchantId" name=merchantId value="006263015610001" maxlength=15>
+													</td>
+												</tr>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>端末代號：<input type=text name=terminalId value="00010001" maxlength=8>
+													</td>
+												</tr>
+ 												<tr bgcolor="#FFFFFF">
+													<td width=100%>交易類型：<input type=text id="txnType" name=txnType value="01" maxlength=5>
+													</td>
+												</tr>
+                                                           
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>支援錢包清單：<input type=text name=walletList value="94901" maxlength=999>
+													</td>
+												</tr>
+
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>加密QR Code內容： <select name='encQRCode' id='exeEnv' maxlength=999>
+															<option value='BATMUCtQxTIQk64JnYWHkWbiUc98278Olk3Mk2zqApXqIkwdIzXqRuPsXY1Xp6TavWl99awMPxTokIwxIxEAt6GQoiYFJbbfLpYdGD49A%2FL9%2BuNjWWcBmfOdBa0S1GF1Lx0EvaXNZ6A4ASKT3afQRUcMMjWmvYeGsGin1b3OUAnDuS6tCjgPYBW92QmrSPywPsNLu0vTIMOQiEv3XMKv4pbqGWRZMNQEtTgHhgv%2FxNq%2F''>台灣pay(F)</option>
+															<option value='Bcm67B3%2BTTR6eNYjrebel8nlyPeqiD%2BHg8yJBQeUa4kp4PsOda9rqabygWTphVeR6zxUAAxhpZVCPBZ%2B0Qn7dG4ivu%2BUA4JqIFCDdpIJSbgJp%2B%2BlRoXKObppHgCNYkeiHmPhKB0bJgDibDgQ25pno%2FjjJDoPaC1rwwWuBZVRsAWDoYXxFHR%2BrqwPZwZpTq4JxvUHb%2F5Zvke0r1oQOTYQdseHrfZivOrLnugLLD%2F5KzCMu0kufk%2BY6B%2Btsu8ZCiYhXU2ojiWZDQfQoMXhx%2FmtbCc%3D'>台灣payEMVQR(F)</option>
+															<option value='BaUWoPEWw8spOGYzxaQZO18K389TUU4GMGdY3pwB1cZBjj25DVkydF5%2FZOSzvVRe%2Bm%2FuBdjpUP%2F3h8Nz%2FDUoVYQZTjgJQVD797qij4rSE9gKq5zgOWmEQqhDbs8CkEm%2BxWQM%2BTvLHhrQmQ9OSBjyDL6TjYkHWRhYTA%2B6YrEvzJ5wPKoh8kPa%2BMnOoDFIu8k8TuOlDv0yonQ96MQ6uvYG0eAUwV4LyMS0kCpb5ETOx%2Bs05NaOJlqnmnrNofG9TRYg80%2FE85q7Rp%2FlPK2clsGrTPrPHZ7TR7TpVLvzcCcpgdXUyPuMXV5BFvSjzDMG%2FJVwTLMtJ35RJJz%2FxcHINlKXHieKY2A0m8eJJSUlkQvaUix6DSZm2Z8AA3Qy2cMDpMOgUB0CG%2BFs3iYqcEYYBDI6KGk%2B%2BddBchqFimCuxS34AliC' selected>EMVQR(VMJCF)</option>
+															<option value='BT4fpSzBEywzmG%2BvlbAum7atsaTuj5nl%2BYDKAUULRt8e1aYkTjTfRFtx4MXOJbMQpIuJbI5U3JgN9PlhVru8MkxteRDAjXFL%2Bwkj0kRRh%2FVXRh3TRfWMO%2B8ejdKjnn5PzYgJq%2FXOEOu0j9RW9vrKeZ%2BKs7YWgizLOGa6iSKi3Y5EJI6tMnMiEJlqfwzFsiJZfS%2F9Pgc%2BHijwGnoGfo7IZ5gtkdZeGpTEVQZz63BIlDUyqesFHV%2FSQhvOcUMvrmuK%2Bw%3D%3D' selected>信用卡繳費QR</option>
+													    		<option value='BdQb4mIkor5o1GGXG3Feiz30xepdvzDAEPKk1MIScO1FYqdfMWnxTGbZgKX%2BXNdz0BMQ9bUdyTsKVymY1xGFjR09X9r28vMehKASpdvhr1V%2BpN3nqWRUdvDJGM20E5kjk3ooGH4b7jpZ6a5049tAW%2FdE%2FO1R%2Bkohv9%2BSegN%2BO0uulCwqnsHEm75AvtVapoMopEycbnZIeTz%2BgdyXiGxklaCn6PX7DAwcb%2BU7kEcKF3%2FwMMYxBPYw0ncT9y2sBy1a4p5m153Ub1gJfiQxCXKGsR8%3D' selected>金融卡繳費QR</option>
+													</select>
+													</td>
+												</tr>
+
+												                                                                                           												
+									                        <!--<tr bgcolor="#FFFFFF">
+													<td width=100%>加密QR Code內容：<input type=text name=encQRCode value='BATMUCtQxTIQk64JnYWHkWbiUc98278Olk3Mk2zqApXqIkwdIzXqRuPsXY1Xp6TavWl99awMPxTokIwxIxEAt6GQoiYFJbbfLpYdGD49A%2FL9%2BuNjWWcBmfOdBa0S1GF1Lx0EvaXNZ6A4ASKT3afQRUcMMjWmvYeGsGin1b3OUAnDuS6tCjgPYBW92QmrSPywPsNLu0vTIMOQiEv3XMKv4pbqGWRZMNQEtTgHhgv%2FxNq%2F'
+                                                                                                        size=80 maxlength=999>
+													</td>
+												</tr>-->
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>交易結果回傳網址：<input type=text name=encRetURL value='BUBkkbctOcLxTwhLDPxa6CtHjyyIxIWlCVaqGk55QxJzYEOtxxyqahenP%2FLVJbBIAafulZcvX%2BijybAZhsEBD%2BY%3D'  size=80 maxlength=400>
+													</td>
+												</tr>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>REQ驗證碼： <input type=text id="verifyCode" name=verifyCode value="" size=80
+														maxlength=64>
+													</td>
+												</tr>
+												<tr bgcolor="#FFFFFF">
+													<td width=100%>驗證參數：<input type=text id="KeyID" name=key value="04E61A6ABAC70D44D3E64648A29CD171E732549DB3CD5CAF" maxlength=64>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr bgcolor="#AEDCFF">
+										<td align=middle><input type='button' value="Pay" border=0 name=imageField
+											width="161" height="32" onclick='doSubmit(this)'></td>
+									</tr>
+								</table>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
