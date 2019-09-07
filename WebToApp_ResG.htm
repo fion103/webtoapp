@@ -12,7 +12,8 @@ a:hover {
 -->
 </style>
 <!--<meta http-equiv=”refresh” content=”0;url=http://www.new-url.com/” />-->
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
 <meta content="MSHTML 6.00.2800.1106" name=GENERATOR>
 <link href="style.css" rel="stylesheet" type="text/css">
 
@@ -55,27 +56,29 @@ a:hover {
 	}
 	function doSubmit(btn) {
 		calculateReqToken();
+		
 
 		var frm = document.forms[0];
-		var exeEnv = document.getElementById('exeEnv').value;
-		var strUrl = exeEnv + '/FOCAS_WS/API20/QRP/V2/WebToAppRes/';
-		if (exeEnv == 'www.focas-test.fisc.com.tw') {
-			strUrl = 'https://' + strUrl
-		} else {
-			strUrl = 'http://' + strUrl
-		}
-		//https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/
+		var txtEncRetURL = decodeURI(txtEncRetURL);
+		var strUrl = 'https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/';
+
 		frm.action = strUrl;
+		
+		//window.location.rplace(strUrl);
+ 		//window.open(strUrl);
 		frm.submit();
+               
+		
 	}
+
+	
+	
        
 	function calculateReqToken() {
 		
 		
-		var txtAcqBank = document.getElementById('acqBank');
+		//var txtAcqBank = document.getElementById('acqBank');
 		var txtMerchant = document.getElementById('merchantId');
-		//txtAcqBank.value = txtMerchant.value.substr(0, 3);
-		
 		var txtEncRetURL = document.pay_form.encRetURL.value;
                 var txtcardPlan = document.pay_form.cardPlan.value;
 		var txtOrderNumber = document.pay_form.orderNumber.value;
@@ -88,12 +91,11 @@ a:hover {
 		
 		var txtKey = document.pay_form.key.value;
 		var txtInput = "";
-                txtInput =  txtAcqBank  + txtcardPlan + txtEncRetURL  + txthostId + txtMerchantId  + txtOrderNumber + txtresponseCode +  txtTerminalId  + txtKey;
+                txtInput =  txtAcqBank  + txtcardPlan + "BUhDerT2mFKOc7lPNH%2fc%2fAmckIsBD%2btbwlFLmPw9OnDfWuzWHvJKBtfKngYbRTvX9garN%2bYVOEktAeNaZm7c%2biM"  + txthostId + txtMerchantId  + txtOrderNumber + txtresponseCode +  txtTerminalId  + txtKey;
 
-		var txtSignType = document.getElementById('signType');
-		if(txtSignType.options[txtSignType.selectedIndex].value=="1" )
 			dosha256(txtInput);
 	}
+	
 	function dosha256(input) {
 		var txtReqSign = document.getElementById('verifyCode');
 		txtReqSign.value = hex_sha256(input);
@@ -115,34 +117,18 @@ a:hover {
 				<table cellSpacing=0 cellPadding=8 width=520 border=0>
 					<tr>
 						<td>
-							<form id="pay_form" name="pay_form" method=POST action="https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/" target="_blank">
-                                                         <!--<form id="pay_form" name="pay_form" method=post action="https://www.focas-test.fisc.com.tw/DEV_FOCAS_WS/API20/QRP/V2/WebToAppRes/">-->
-                                                                      
-
-								<table width=100% cellspacing=1 cellpadding=5 border=0 bgcolor=#999999>
+							<form id="pay_form" name="pay_form" method=get action="https://www.focas-test.fisc.com.tw/FOCAS_WS/API20/QRP/V2/WebToAppRes/" target="_blank">
+                                                         
+   								<table width=100% cellspacing=1 cellpadding=5 border=0 bgcolor=#999999>
 									<tr bgcolor=#ffa87d>
 										<td bgcolor=#AEDCFF class=c-13><strong>網路商店WebToApp Sale Sample</strong></td>
 									</tr>
 									<tr>
 										<td width=100%>
 											<table width=100% border=0 align=center cellpadding=5 cellspacing=1 class=c-13>
-												<tr bgcolor="#FFFFFF">
-													<td width=100%>執行環境： <select name='exeEnv' id='exeEnv'>
-															<option value='127.0.0.1:8080'>本機環境</option>
-															<option value='10.201.201.143:8080'>開發環境</option>
-															<option value='www.focas-test.fisc.com.tw' selected>測試環境</option>
-													</select>
-													</td>
-												</tr>
-												<input type=hidden name=txnStatus value="0">
-												<input type=hidden name=txnType value="01">
-												<!--<input type=hidden id="acqBank" name=acqBank value="">-->
-												<tr bgcolor="#FFFFFF">
-													<td width=100%>驗證碼押碼方式： <select id="signType" name=signatureType>
-															<option value="1" selected>SHA-256</option>
-														</select>
-													</td>
-												</tr>
+												
+												
+												
 												<tr bgcolor="#FFFFFF">
 													<td width=100%>acqBank：<input type=text id="acqBank" name=acqBank value="006" maxlength=20>
 													</td>
@@ -176,7 +162,7 @@ a:hover {
 													</td>
 												</tr>
 												<tr bgcolor="#FFFFFF">
-													<td width=100%>交易結果回傳網址：<input type=text name=encRetURL value='BUhDerT2mFKOc7lPNH%2fc%2fAmckIsBD%2btbwlFLmPw9OnDfWuzWHvJKBtfKngYbRTvX9garN%2bYVOEktAeNaZm7c%2biM'  size=80 maxlength=500>
+													<td width=100%>交易結果回傳網址：<input type=text name=encRetURL value='BUhDerT2mFKOc7lPNH/c/AmckIsBD+tbwlFLmPw9OnDfWuzWHvJKBtfKngYbRTvX9garN+YVOEktAeNaZm7c+iM'  size=80 maxlength=500>
 													</td>
 												</tr>
 												<tr bgcolor="#FFFFFF">
